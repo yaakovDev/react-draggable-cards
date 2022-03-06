@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import './index.css'
 
-function App() {
+import React from 'react'
+
+export const App = () => {
+  
+  const renderCards = () => { 
+    return [...Array(30).keys()].map( i => { 
+      return (<div key={i} draggable className="card-flex-item">
+        {i}
+        </div>
+        )
+
+    })
+   }  
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='cards-flex-container'>
+        {renderCards()}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App  
