@@ -25,7 +25,7 @@
 
 .cards-flex-container {
   display:flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   gap:5px;
   flex-wrap: wrap;
 }
