@@ -1,4 +1,5 @@
 
+
 .card-flex-item {
  width:100px;
  height: 100px;
@@ -13,6 +14,14 @@
  vertical-align: middle;
  line-height: 100px;/* The same as your div height */
 }
+
+.on-drag-over {
+  background-color:hsl(303, 100%, 50%);
+}
+
+/* .card-flex-item:hover {
+  background-color:hsl(303, 100%, 50%);
+} */
 
 .cards-flex-container {
   display:flex;
