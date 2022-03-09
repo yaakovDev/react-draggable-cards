@@ -2,7 +2,6 @@ import React, {useRef,useContext} from 'react'
 
 const DndContext = React.createContext()
 
-
 export const useDndContext = () => { 
  return useContext(DndContext)
 }
@@ -110,3 +109,12 @@ export const DndCard = ({card,cardKey,children,...other}) => {
   )
 }
 
+export const DndSimple = ({cards,setCards,children,...other}) => {
+    return (
+      <DndContainer cards={cards} setCards={setCards} {...other}>
+        {cards.map( i => 
+          (<DndCard card={i} cardKey={i.id} key={i.id}>{i.val}</DndCard>)
+        )}
+      </DndContainer>
+    )    
+}

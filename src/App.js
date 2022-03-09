@@ -1,5 +1,5 @@
 import {useState,useRef} from 'react'
-import {DndCard,DndContainer} from './DndCard'
+import {DndCard,DndSimple,DndContainer} from './DndCard'
 import './index.css'
 
 const psalm =`אשרי האיש אשר לא הלך בעצת רשעים ובדרך חטאים לא עמד ובמושב לצים לא ישב כי אם בתורת ה' חפצו ובתורתו יהגה יומם ולילה והיה כעץ שתול על פלגי מים אשר פריו יתן בעתו ועלהו לא יבול וכל אשר יעשה יצליח לא כן הרשעים כי אם כמץ אשר תדפנו רוח על כן לא יקמו רשעים במשפט וחטאים בעדת צדיקים כי יודע ה' דרך צדיקים ודרך רשעים תאבד`
@@ -17,12 +17,14 @@ export const App = () => {
 
     })
    }  
+
+  return <DndSimple cards={cards} setCards={setCards} dndLogics='rtl' className='cards-flex-container'/>
   
-  return (
-    <DndContainer cards={cards} setCards={setCards} dndLogics='rtl' className='cards-flex-container'>
-        {renderCards()}
-    </DndContainer>
-  )
+  // return (
+  //   <DndContainer cards={cards} setCards={setCards} dndLogics='rtl' className='cards-flex-container'>
+  //       {renderCards()}
+  //   </DndContainer>
+  // )
 }
 
 export default App  
