@@ -18,15 +18,14 @@ export const DndContainer = ({setCards,cards,children,...other}) => {
 
 
 
-export const DndCard = ({card,children,...other}) => {
+export const DndCard = ({card,cardKey,children,...other}) => {
 
   const draggedCard = useRef(null)
   const {cards,setCards} = useDndContext();
 
-  const onDragStart = (e,card) => {
-    // console.log(`dragging:${id}...`)
+  const onDragStart = (e) => {
     e.dataTransfer.effectAllowed = 'move'
-    e.dataTransfer.setData("text/plain", card.id);
+    e.dataTransfer.setData("text/plain", cardKey);
     if (draggedCard.current)
       draggedCard.current.className='card-flex-item'
     draggedCard.current = e.target
@@ -38,35 +37,27 @@ export const DndCard = ({card,children,...other}) => {
     // e.dataTransfer.setDragImage(img, 0, 0);    
   }
   
-  const onDragOver = (e,toCard) => {
-    console.log(`onDragOver`)
+  const onDragOver = (e) => {
     e.target.className+=' on-drag-over'
-    // const from_id = +e.dataTransfer.getData("text/plain");
-    // renderDnd(from_id,toCard.id)
-    // renderDnd(from_id,toCard.id)
     e.preventDefault();
     //const temp = cardRef.current
     //cardRef.current = e.target
     //e.target = temp
-    
   }
   
   const onDragLeave = (e) => {
     e.target.className='card-flex-item'
     e.preventDefault();
-    //e.target
-    // cardRef.current.style.border ="3px solid green";
   }
   
-  const onDragDrop = (e,toCard) => { 
-    const from_id = +e.dataTransfer.getData("text/plain");
+  const onDragDrop = (e) => { 
     if(draggedCard.current)
       draggedCard.current.className='card-flex-item on-drag-over'
     e.target.className='card-flex-item'
-    ltr_renderDnd(from_id,toCard.id)
-    //setTimeout(() => draggedCard.current.className='card-flex-item',200)
-  
+    const fromCardKey = e.dataTransfer.getData("text/plain");
+    ltr_renderDnd(fromCardKey,cardKey)
     e.preventDefault();
+
     //Tried to implement it all inside hook, but yields strange behavoir
     // setCards( prev => { 
     //     const toIndex = prev.findIndex( i=> (i.id==to_card.id))
@@ -90,7 +81,7 @@ export const DndCard = ({card,children,...other}) => {
     const fromIndex = cards.findIndex( i=> (i.id==fromId))
     const toIndex = cards.findIndex( i=> (i.id==toId))
     if ( fromIndex > toIndex) {
-        //Tried to implement like this inside hook, but yields strange behavoir
+      //Tried to implement like this inside hook, but yields strange behavoir
       // setCards( prev => {
       //     prev.splice(toIndex,0, cards[fromIndex])
       //     prev.splice(fromIndex+1,1)
@@ -109,10 +100,10 @@ export const DndCard = ({card,children,...other}) => {
 
   return (
     <div {...other} draggable="true"
-      onDragStart={e =>onDragStart(e,card)} 
-      onDragOver= {e => onDragOver(e,card) } 
+      onDragStart={e =>onDragStart(e)} 
+      onDragOver= {e => onDragOver(e) } 
       onDragLeave={e => onDragLeave(e) }
-      onDrop={ e => onDragDrop(e,card)}
+      onDrop={ e => onDragDrop(e)}
       className="card-flex-item">
         {children}
     </div>
