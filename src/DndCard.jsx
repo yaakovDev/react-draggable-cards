@@ -29,15 +29,7 @@ export const DndCard = ({card,cardKey,children,...other}) => {
       setOriginalClassName(e.target.className)
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData("text/plain", cardKey);
-    // if (draggedCard.current)
-    //   draggedCard.current.className='card-flex-item'
     draggedCard.current = e.target
-    // e.target.className='card-flex-item on-drag-over'
-    // setTimeout(() => e.target.className='card-flex-item', 0)
-    // e.preventDefault();
-    //hide dragging silhouette
-    // var img = document.createElement("div"); 
-    // e.dataTransfer.setDragImage(img, 0, 0);    
   }
   
   const onDragOver = (e) => {
@@ -59,8 +51,8 @@ export const DndCard = ({card,cardKey,children,...other}) => {
   
   const onDragDrop = (e) => {
     if(draggedCard.current)
-      draggedCard.current.className=originalClassName;//'card-flex-item on-drag-over'
-    e.target.className=originalClassName;//'card-flex-item'
+      draggedCard.current.className=originalClassName;
+    e.target.className=originalClassName;
     setOriginalClassName('')
     const fromCardKey = e.dataTransfer.getData("text/plain");
     ltr_renderDnd(fromCardKey,cardKey)
@@ -88,7 +80,7 @@ export const DndCard = ({card,cardKey,children,...other}) => {
       onDragOver= {e => onDragOver(e) } 
       onDragLeave={e => onDragLeave(e) }
       onDrop={ e => onDragDrop(e)}
-      className="card-flex-item">
+    >
         {children}
     </div>
   )

@@ -1,0 +1,7 @@
+.on-drag-over {
+  opacity:.7;
+}
+
+.on-drag-leave {
+  opacity:1;
+}
