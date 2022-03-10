@@ -8,23 +8,21 @@ let vPsalm = psalm.split(" ")
 
 export const App = () => {
 
-  const [cards,setCards] = useState( vPsalm.map( (i,index) => {return {id:index,val:i}} ) )
+  const [cards,setCards] = useState( vPsalm.map( (i,index) => {return {key:index,val:i}} ) )
 
   const renderCards = () => { 
     return cards.map( i => { 
-      return (<DndCard card={i} cardKey={i.id} key={i.id}>{i.val}
+      return (<DndCard card={i} cardKey={i.key} key={i.key}>
+                {i.val}
               </DndCard>)
-
     })
    }  
-
-  return <DndSimple cards={cards} setCards={setCards} dndLogics='rtl' className='cards-flex-container'/>
-  
-  // return (
-  //   <DndContainer cards={cards} setCards={setCards} dndLogics='rtl' className='cards-flex-container'>
-  //       {renderCards()}
-  //   </DndContainer>
-  // )
+    
+  return (
+    <DndContainer cards={cards} setCards={setCards} dndLogics='rtl' className='cards-flex-container'>
+        {renderCards()}
+    </DndContainer>
+  )
 }
 
 export default App  

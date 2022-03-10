@@ -16,7 +16,11 @@
 }
 
 .on-drag-over {
-  background-color:hsl(303, 100%, 50%);
+  opacity:.7;
+}
+
+.on-drag-leave {
+  opacity:1;
 }
 
 /* .card-flex-item:hover {

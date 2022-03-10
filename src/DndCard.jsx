@@ -1,4 +1,4 @@
-import React, {useRef,useContext} from 'react'
+import React, {useRef,useContext, useState} from 'react'
 
 const DndContext = React.createContext()
 
@@ -6,30 +6,34 @@ export const useDndContext = () => {
  return useContext(DndContext)
 }
 
+//DndContainer DndContainer DndContainer DndContainer DndContainer 
 export const DndContainer = ({setCards,cards,children,...other}) => {
   return (
     <DndContext.Provider value={{cards,setCards}} >
-    <div {...other}>
+    <div style={{overflow:"auto"}} {...other}>
       {children}
     </div>
   </DndContext.Provider>)
 }
 
 
-
+//DndCard DndCard DndCard DndCard DndCard DndCard DndCard DndCard 
 export const DndCard = ({card,cardKey,children,...other}) => {
 
   const draggedCard = useRef(null)
   const {cards,setCards} = useDndContext();
+  const [ originalClassName,setOriginalClassName] = useState(null)
 
-  const onDragStart = (e) => {
+  const onDragStart = (e) => {  
+    if(!originalClassName)
+      setOriginalClassName(e.target.className)
     e.dataTransfer.effectAllowed = 'move'
     e.dataTransfer.setData("text/plain", cardKey);
-    if (draggedCard.current)
-      draggedCard.current.className='card-flex-item'
+    // if (draggedCard.current)
+    //   draggedCard.current.className='card-flex-item'
     draggedCard.current = e.target
-    e.target.className='card-flex-item on-drag-over'
-    setTimeout(() => e.target.className='card-flex-item', 0)
+    // e.target.className='card-flex-item on-drag-over'
+    // setTimeout(() => e.target.className='card-flex-item', 0)
     // e.preventDefault();
     //hide dragging silhouette
     // var img = document.createElement("div"); 
@@ -37,7 +41,10 @@ export const DndCard = ({card,cardKey,children,...other}) => {
   }
   
   const onDragOver = (e) => {
-    e.target.className+=' on-drag-over'
+    if ( !originalClassName) 
+      setOriginalClassName(e.target.className)
+    if ( !e.target.className.includes('on-drag-over') && originalClassName)
+      e.target.className=`${originalClassName} on-drag-over`
     e.preventDefault();
     //const temp = cardRef.current
     //cardRef.current = e.target
@@ -45,47 +52,25 @@ export const DndCard = ({card,cardKey,children,...other}) => {
   }
   
   const onDragLeave = (e) => {
-    e.target.className='card-flex-item'
+    if ( !e.target.className.includes('on-drag-leave') && originalClassName) 
+      e.target.className=`${originalClassName} on-drag-leave`
     e.preventDefault();
   }
   
-  const onDragDrop = (e) => { 
+  const onDragDrop = (e) => {
     if(draggedCard.current)
-      draggedCard.current.className='card-flex-item on-drag-over'
-    e.target.className='card-flex-item'
+      draggedCard.current.className=originalClassName;//'card-flex-item on-drag-over'
+    e.target.className=originalClassName;//'card-flex-item'
+    setOriginalClassName('')
     const fromCardKey = e.dataTransfer.getData("text/plain");
     ltr_renderDnd(fromCardKey,cardKey)
-    e.preventDefault();
-
-    //Tried to implement it all inside hook, but yields strange behavoir
-    // setCards( prev => { 
-    //     const toIndex = prev.findIndex( i=> (i.id==to_card.id))
-    //     const fromIndex = prev.findIndex( i=> (i.id== from_id))
-    //     if ( fromIndex > toIndex) {
-    //       console.log('here-1')
-    //       prev.splice(toIndex,0, prev[fromIndex])
-    //       prev.splice(fromIndex+1,1)
-    //       }
-    //     else{
-    //       console.log('here-2')
-    //       let save = prev[fromIndex]
-    //       prev.splice(fromIndex,1)
-    //       prev.splice(toIndex,0,save)
-    //       }
-    //     return [...prev]
-    //     })
+    // e.preventDefault();
   }  
   
   const ltr_renderDnd = (fromId,toId) => { 
-    const fromIndex = cards.findIndex( i=> (i.id==fromId))
-    const toIndex = cards.findIndex( i=> (i.id==toId))
+    const fromIndex = cards.findIndex( i=> (i.key==fromId))
+    const toIndex = cards.findIndex( i=> (i.key==toId))
     if ( fromIndex > toIndex) {
-      //Tried to implement like this inside hook, but yields strange behavoir
-      // setCards( prev => {
-      //     prev.splice(toIndex,0, cards[fromIndex])
-      //     prev.splice(fromIndex+1,1)
-      //     return [...prev]
-      // })
       cards.splice(toIndex,0, cards[fromIndex])//add
       cards.splice(fromIndex+1,1)//remove
       }
@@ -109,12 +94,4 @@ export const DndCard = ({card,cardKey,children,...other}) => {
   )
 }
 
-export const DndSimple = ({cards,setCards,children,...other}) => {
-    return (
-      <DndContainer cards={cards} setCards={setCards} {...other}>
-        {cards.map( i => 
-          (<DndCard card={i} cardKey={i.id} key={i.id}>{i.val}</DndCard>)
-        )}
-      </DndContainer>
-    )    
-}
+
